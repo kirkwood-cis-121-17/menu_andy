@@ -40,32 +40,6 @@ def turn():
                                 return choice 
                         else:
                                 print("You need to input a number or 'random.'")
-
-def distX(distance,angle):
-        if angle >= 0 and angle < 90:
-                posNeg = 1
-        elif angle <= 270 and angle >= 90:
-                posNeg = -1
-        elif angle <= 360 and angle > 270:
-                posNeg = 1
-        elif angle == 90 or angle == 270:
-                posNeg = 0
-                
-        x = float(distance) * math.cos(angle)
-        
-        return x
-        
-def distY(distance,angle):
-        if angle > 0 and angle < 180:
-                posNeg = 1
-        elif angle > 180 and angle < 360:
-                posNeg = -1
-        elif angle == 0 or angle == 180:
-                posNeg = 0
-        
-        y = float(distance) * math.sin(angle) * float(posNeg)
-        
-        return y
         
 def move(choice):
         angle = choice
