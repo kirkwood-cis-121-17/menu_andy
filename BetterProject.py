@@ -170,4 +170,5 @@ def move(choice):
                         print("You need to make a valid choice.")
                         print("")
         start()
-start()
+if __name__ == "__main__":
+    start()
