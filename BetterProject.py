@@ -53,9 +53,7 @@ def get_distance(angle):
 
 def get_Exact(exact_X,exact_Y,angle,distance): #HAHAHAHAHA THIS IS DISGUSTING WHAT AM I EVEN DOING???
         string = str(angle)
-        length = len(string)
         dist = str(distance)
-        dlen = len(dist)
         
         if exact_X == "0" or exact_Y == "0":
                 if exact_X == "0":
@@ -69,13 +67,6 @@ def get_Exact(exact_X,exact_Y,angle,distance): #HAHAHAHAHA THIS IS DISGUSTING WH
         else:
                 exact_X += "+" + dist + "cos("+string+")"
                 exact_Y += "+" + dist + "sin("+string+")"
-        
-        #loops = 0
-        #exact_X_Length = len(exact_X)
-        #loopz = math.floor(len(exact_X)/(dlen + 4 + length + 4))
-        #while loops != loops_max_X:
-        #lyst_X.append((exact_X[dlen + 4 + (4 + length + 4) * loopz:(dlen + 4 + length) + (4 + length + 4) * loopz]))
-                #loops += 1
         
         lyst_X = []
         lyst_Y = []
@@ -91,12 +82,6 @@ def get_Exact(exact_X,exact_Y,angle,distance): #HAHAHAHAHA THIS IS DISGUSTING WH
                                 get_out = 1
                 except ValueError:
                         get_out = 1
-        #loops = 0
-        #exact_Y_Length = len(exact_Y)
-        #loopz = math.floor(len(exact_Y)/(dlen + 4 + length + 4))
-        #while loops != loops_max_Y:
-        #lyst_Y.append((exact_Y[dlen + 4 + (4 + length + 4) * loopz:(dlen + 4 + length) + (4 + length + 4) * loopz]))
-                #loops += 1
         
         get_out = 0
         thingy = exact_Y
@@ -115,17 +100,14 @@ def get_Exact(exact_X,exact_Y,angle,distance): #HAHAHAHAHA THIS IS DISGUSTING WH
         big_counter = 0
         little_counter = 1
         little_counter_max = len(lyst_X)
-        temp_list = []
+        temp_list = exact_X.split("+")
         join_X = 0
-        print(str(big_counter) + "/" + str(little_counter))
-        print(str(big_counter_max) + "/" + str(little_counter_max))
+
         while big_counter < big_counter_max:
                 while little_counter < little_counter_max:
                         base = int(lyst_X[big_counter])
                         compare = int(lyst_X[little_counter])
                         if base - 180 == compare or base + 180 == compare:
-                                print("IM HERE")
-                                temp_list=exact_X.split("+")
                                 temp_big = str(temp_list[big_counter])
                                 temp_little = str(temp_list[little_counter])
                                 big_index = temp_big.index("c")
@@ -152,7 +134,6 @@ def get_Exact(exact_X,exact_Y,angle,distance): #HAHAHAHAHA THIS IS DISGUSTING WH
                                 big_counter = big_counter_max
                                 little_counter = little_counter_max
                         elif base == compare:
-                                print("OHO THIS THING")
                                 temp_list=exact_X.split("+")
                                 temp_big = str(temp_list[big_counter])
                                 temp_little = str(temp_list[little_counter])
@@ -177,17 +158,14 @@ def get_Exact(exact_X,exact_Y,angle,distance): #HAHAHAHAHA THIS IS DISGUSTING WH
         little_counter = 1
         little_counter_max = len(lyst_Y)
         join = 0
-        temp_list = []
+        temp_list = exact_Y.split("+")
         
-        print(str(big_counter) + "/" + str(little_counter))
-        print(str(big_counter_max) + "/" + str(little_counter_max))
         while big_counter < big_counter_max:
                 while little_counter < little_counter_max:
                         base = int(lyst_Y[big_counter])
                         compare = int(lyst_Y[little_counter])
                         if base - 180 == compare or base == compare - 180:
-                                print("Enter if")
-                                temp_list=exact_Y.split("+")
+                                
                                 temp_big = str(temp_list[big_counter])
                                 temp_little = str(temp_list[little_counter])
                                 big_index = temp_big.index("s")
@@ -214,7 +192,6 @@ def get_Exact(exact_X,exact_Y,angle,distance): #HAHAHAHAHA THIS IS DISGUSTING WH
                                 big_counter = big_counter_max
                                 little_counter = little_counter_max
                         elif base == compare:
-                                print("Enter equals")
                                 temp_list=exact_Y.split("+")
                                 temp_big = str(temp_list[big_counter])
                                 temp_little = str(temp_list[little_counter])
@@ -241,6 +218,41 @@ def get_Exact(exact_X,exact_Y,angle,distance): #HAHAHAHAHA THIS IS DISGUSTING WH
                 
         return exact_X,exact_Y
         
+def angle_menu(angle):
+        go_back = False
+        while go_back != True:
+                print("Do you want to turn to a specific angle or add on to the current angle?")
+                print("1) Specific angle")
+                print("2) Add to current angle")
+                print("3) Go back")
+                choice = input("Make your choice: ")
+                if choice == "1":
+                        print("Input an amount of degrees to turn or type 'random': ",end="")
+                        angle = get_angle()
+                        while angle >= 360:
+                                angle = angle - 360
+                        while angle < 0:
+                                angle = angle + 360
+                        print("Your angle is now ",angle," degrees.",sep = '')
+                        go_back = True
+                elif choice == "2":
+                        print("Input an amount of degrees to turn or type 'random': ",end="")
+                        add_angle = get_angle()
+                        angle = angle + add_angle
+                        while angle >= 360:
+                                angle = angle - 360
+                        while angle < 0:
+                                angle = angle + 360
+                        print("Your angle is now ",angle," degrees.",sep = '')
+                        go_back = True
+                elif choice == "3":
+                        print("Your angle is still ",angle," degrees.",sep = '')
+                        go_back = True
+                else:
+                        print("Make a valid choice of I'll lick you.")
+                        print("")
+        return angle
+
 def move(choice):
         angle = choice
         enrage = 0
@@ -260,33 +272,7 @@ def move(choice):
                 print("6) Quit")
                 choice = input("Make your choice: ")
                 if choice == "1":
-                        while go_back != True:
-                                print("Do you want to turn to a specific angle or add on to the current angle?")
-                                print("1) Specific angle")
-                                print("2) Add to current angle")
-                                print("3) Go back")
-                                choice = input("Make your choice: ")
-                                if choice == "1":
-                                        print("Input an amount of degrees to turn or type 'random': ",end="")
-                                        angle = get_angle()
-                                        print("Your angle is now ",angle," degrees.",sep = '')
-                                        go_back = True
-                                elif choice == "2":
-                                        print("Input an amount of degrees to turn or type 'random': ",end="")
-                                        add_angle = get_angle()
-                                        angle = angle + add_angle
-                                        while angle >= 360:
-                                                angle = angle - 360
-                                        while angle < 0:
-                                                angle = angle + 360
-                                        print("Your angle is now ",angle," degrees.",sep = '')
-                                        go_back = True
-                                elif choice == "3":
-                                        print("Your angle is still ",angle," degrees.",sep = '')
-                                        go_back = True
-                                else:
-                                        print("You need to make a valid choice.")
-                                        print("")
+                        angle = angle_menu(angle)
                 elif choice == "2":
                         distance_X,distance_Y,distance = get_distance(angle)
                         position_X,position_Y = position_X+distance_X,position_Y+distance_Y
