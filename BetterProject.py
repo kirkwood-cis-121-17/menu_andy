@@ -52,8 +52,6 @@ def get_distance(angle):
         return distanceX,distanceY,distance
 
 def get_Exact(exact_X,exact_Y,angle,distance): #HAHAHAHAHA THIS IS DISGUSTING WHAT AM I EVEN DOING???
-        lyst_X = []
-        lyst_Y = []
         string = str(angle)
         length = len(string)
         dist = str(distance)
@@ -72,70 +70,170 @@ def get_Exact(exact_X,exact_Y,angle,distance): #HAHAHAHAHA THIS IS DISGUSTING WH
                 exact_X += "+" + dist + "cos("+string+")"
                 exact_Y += "+" + dist + "sin("+string+")"
         
-        loops = 0
-        exact_X_Length = len(exact_X)
-        loops_max_X = math.ceil(len(exact_X)/(dlen + 4 + length + 4))
-        while loops != loops_max_X:
-                lyst_X.append((exact_X[dlen + 4 + (4 + length + 4) * loops:(dlen + 4 + length) + (4 + length + 4) * loops]))
-                loops += 1
+        #loops = 0
+        #exact_X_Length = len(exact_X)
+        #loopz = math.floor(len(exact_X)/(dlen + 4 + length + 4))
+        #while loops != loops_max_X:
+        #lyst_X.append((exact_X[dlen + 4 + (4 + length + 4) * loopz:(dlen + 4 + length) + (4 + length + 4) * loopz]))
+                #loops += 1
         
-        loops = 0
-        exact_Y_Length = len(exact_Y)
-        loops_max_Y = math.ceil(len(exact_Y)/(dlen + 4 + length + 4))
-        while loops != loops_max_Y:
-                lyst_Y.append((exact_Y[dlen + 4 + (4 + length + 4) * loops:(dlen + 4 + length) + (4 + length + 4) * loops]))
-                loops += 1
-                
-        print(lyst_Y)
-        print(lyst_X)
+        lyst_X = []
+        lyst_Y = []
+        get_out = 0
+        thing = exact_X
+        while get_out != 1:
+                try:
+                        in_S = thing.index("(")
+                        in_E = thing.index(")")
+                        lyst_X.append(thing[(in_S + 1):(in_E)])
+                        thing = thing[(in_E + 2):]
+                        if len(thing) < 2:
+                                get_out = 1
+                except ValueError:
+                        get_out = 1
+        #loops = 0
+        #exact_Y_Length = len(exact_Y)
+        #loopz = math.floor(len(exact_Y)/(dlen + 4 + length + 4))
+        #while loops != loops_max_Y:
+        #lyst_Y.append((exact_Y[dlen + 4 + (4 + length + 4) * loopz:(dlen + 4 + length) + (4 + length + 4) * loopz]))
+                #loops += 1
         
-        big_counter_max = len(lyst_X)
+        get_out = 0
+        thingy = exact_Y
+        while get_out != 1:
+                try:
+                        in_S = thingy.index("(")
+                        in_E = thingy.index(")")
+                        lyst_Y.append(thingy[(in_S + 1):(in_E)])
+                        thingy = thingy[(in_E + 2):]
+                        if len(thingy) < 2:
+                                get_out = 1
+                except ValueError:
+                        get_out = 1
+        
+        big_counter_max = len(lyst_X) - 1
         big_counter = 0
-        little_counter_base = 1
         little_counter = 1
         little_counter_max = len(lyst_X)
-        print(big_counter,big_counter_max)
+        temp_list = []
+        join_X = 0
+        print(str(big_counter) + "/" + str(little_counter))
+        print(str(big_counter_max) + "/" + str(little_counter_max))
         while big_counter < big_counter_max:
-                print("Enter first")
                 while little_counter < little_counter_max:
-                        print("Enter second")
                         base = int(lyst_X[big_counter])
                         compare = int(lyst_X[little_counter])
-                        print(base)
-                        print(compare)
-                        if base == compare or base - 180 == compare or base == compare - 180:
-                                print("Enter if")
-                                temp_list=exact_X.split(" + ")
-                                del temp_list[big_counter]
+                        if base - 180 == compare or base + 180 == compare:
+                                print("IM HERE")
+                                temp_list=exact_X.split("+")
+                                temp_big = str(temp_list[big_counter])
+                                temp_little = str(temp_list[little_counter])
+                                big_index = temp_big.index("c")
+                                little_index = temp_little.index("c")
+                                big_num = int(temp_big[:big_index])
+                                little_num = int(temp_little[:little_index])
+                                if big_num > little_num:
+                                        temp_list[big_counter] = str(big_num - little_num) + str(temp_big[big_index:])
+                                        del temp_list[little_counter]
+                                        join_X = 1
+                                elif little_num > big_num:
+                                        temp_list[little_counter] = str(little_num - big_num) + str(temp_little[little_index:])
+                                        del temp_list[big_counter]
+                                        join_X = 1
+                                else:
+                                        if big_counter > little_counter:
+                                                del temp_list[big_counter]
+                                                del temp_list[little_counter]
+                                                join_X = 1
+                                        elif little_counter > big_counter:
+                                                del temp_list[little_counter]
+                                                del temp_list[big_counter]
+                                                join_X = 1
+                                big_counter = big_counter_max
+                                little_counter = little_counter_max
+                        elif base == compare:
+                                print("OHO THIS THING")
+                                temp_list=exact_X.split("+")
+                                temp_big = str(temp_list[big_counter])
+                                temp_little = str(temp_list[little_counter])
+                                big_index = temp_big.index("c")
+                                little_index = temp_little.index("c")
+                                big_num = int(temp_big[:big_index])
+                                little_num = int(temp_little[:little_index])
+                                temp_list[big_counter] = str(big_num + little_num) + str(temp_big[big_index:])
                                 del temp_list[little_counter]
-                                exact_X = " + ".join(temp_list)
+                                join_X = 1
                                 big_counter = big_counter_max
                                 little_counter = little_counter_max
                         little_counter += 1
                 big_counter += 1
                 little_counter = big_counter + 1
         
-        big_counter_max = len(lyst_Y)
+        if join_X == 1:
+                exact_X = "+".join(temp_list)
+        
+        big_counter_max = len(lyst_Y) - 1
         big_counter = 0
-        little_counter_base = 1
         little_counter = 1
         little_counter_max = len(lyst_Y)
+        join = 0
+        temp_list = []
         
-        while big_counter > big_counter_max:
-                while little_counter > little_counter_max:
+        print(str(big_counter) + "/" + str(little_counter))
+        print(str(big_counter_max) + "/" + str(little_counter_max))
+        while big_counter < big_counter_max:
+                while little_counter < little_counter_max:
                         base = int(lyst_Y[big_counter])
                         compare = int(lyst_Y[little_counter])
-                        if base == compare or base - 180 == compare or base == compare + 180:
-                                temp_list=exact_Y.split(" + ")
-                                del temp_list[big_counter]
-                                del temp_list[little_counter]
-                                exact_Y = " + ".join(temp_list)
+                        if base - 180 == compare or base == compare - 180:
+                                print("Enter if")
+                                temp_list=exact_Y.split("+")
+                                temp_big = str(temp_list[big_counter])
+                                temp_little = str(temp_list[little_counter])
+                                big_index = temp_big.index("s")
+                                little_index = temp_little.index("s")
+                                big_num = int(temp_big[:big_index])
+                                little_num = int(temp_little[:little_index])
+                                if big_num > little_num:
+                                        temp_list[big_counter] = str((big_num - little_num)) + str(temp_big[big_index:])
+                                        del temp_list[little_counter]
+                                        join = 1
+                                elif little_num > big_num:
+                                        temp_list[little_counter] = str(little_num - big_num) + str(temp_little[little_index:])
+                                        del temp_list[big_counter]
+                                        join = 1
+                                else:
+                                        if big_counter > little_counter:
+                                                del temp_list[big_counter]
+                                                del temp_list[little_counter]
+                                                join = 1
+                                        elif little_counter > big_counter:
+                                                del temp_list[little_counter]
+                                                del temp_list[big_counter]
+                                                join = 1
                                 big_counter = big_counter_max
                                 little_counter = little_counter_max
-                        little_counter = 1
-                big_counter += 1    
+                        elif base == compare:
+                                print("Enter equals")
+                                temp_list=exact_Y.split("+")
+                                temp_big = str(temp_list[big_counter])
+                                temp_little = str(temp_list[little_counter])
+                                big_index = temp_big.index("s")
+                                little_index = temp_little.index("s")
+                                big_num = int(temp_big[:big_index])
+                                little_num = int(temp_little[:little_index])
+                                temp_list[big_counter] = str(big_num + little_num) + str(temp_big[big_index:])
+                                del temp_list[little_counter]
+                                join = 1
+                                big_counter = big_counter_max
+                                little_counter = little_counter_max
+                        little_counter += 1
+                big_counter += 1
                 little_counter = big_counter + 1
                 
+        if join == 1:
+                exact_Y = "+".join(temp_list)
+        
         if exact_X == "":
                 exact_X = "0"
         if exact_Y =="":
@@ -147,9 +245,9 @@ def move(choice):
         angle = choice
         enrage = 0
         position_X = 0
+        position_Y = 0
         exact_X = "0"
         exact_Y = "0"
-        position_Y = 0
         reset = False
         while reset != True:
                 go_back = False
@@ -196,7 +294,7 @@ def move(choice):
                         exact_X,exact_Y = get_Exact(exact_X,exact_Y,angle,distance)
                 elif choice == "3":
                         print("Your coordinates are (",position_X,",",position_Y,").",sep = '')
-                        print("Your angle is ",angle," degrees.")
+                        print("Your angle is ",angle," degrees.",sep = '')
                         print("Your distance from the origin is ",math.sqrt(position_X**2 + position_Y**2),".",sep = '')
                 elif choice == "4":
                         print("Your exact coordinates are (",exact_X,",",exact_Y,").",sep = '')
@@ -206,7 +304,7 @@ def move(choice):
                 elif choice == "6":
                         sys.exit()
                 else:
-                        print("You need to make a valid choice.")
+                        print("Make a valid choice or I'll lick you.")
                         print("")
         start()
 if __name__ == "__main__":
